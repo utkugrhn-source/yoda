@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jedi Medical Academy — Objectives</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#020408;--surface:#080e18;--surface2:#0d1625;
+  --border:#0d2a4a;--border2:#1a3d62;
+  --text:#cce8ff;--text2:#6b9bbf;--text3:#2d5070;
+  --accent:#00d4ff;--accent2:#0099cc;
+  --green:#39ff14;--amber:#ffd700;--red:#ff3355;
+  --orb:'Orbitron',sans-serif;--body:'Exo 2',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100%;font-family:var(--body);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;}
+
+body::before{content:'';position:fixed;inset:0;
+  background-image:
+    radial-gradient(1px 1px at 8% 12%,rgba(255,255,255,.8) 0%,transparent 100%),
+    radial-gradient(1px 1px at 22% 38%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(1.2px 1.2px at 48% 8%,rgba(255,255,255,.8) 0%,transparent 100%),
+    radial-gradient(1px 1px at 68% 55%,rgba(255,255,255,.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 83% 22%,rgba(255,255,255,.7) 0%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 33% 72%,rgba(200,220,255,.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 58% 82%,rgba(255,255,255,.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 12% 88%,rgba(255,255,255,.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 92% 42%,rgba(255,255,255,.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 76% 85%,rgba(200,220,255,.5) 0%,transparent 100%);
+  pointer-events:none;z-index:0;}
+
+@keyframes glow{0%,100%{text-shadow:0 0 8px var(--accent)}50%{text-shadow:0 0 24px var(--accent),0 0 48px rgba(0,212,255,.3)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 8px var(--accent),0 0 20px rgba(0,212,255,.15)}50%{box-shadow:0 0 20px var(--accent),0 0 50px rgba(0,212,255,.25)}}
+
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(2,4,8,.96);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;display:flex;align-items:center;height:52px;
+  box-shadow:0 1px 30px rgba(0,212,255,.08);
+}
+nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.3;}
+.nav-brand{font-family:var(--orb);font-size:clamp(9px,2vw,12px);color:var(--accent);
+  letter-spacing:.12em;animation:glow 3s ease-in-out infinite;flex:1;}
+.nav-link{font-family:var(--orb);font-size:11px;color:var(--text2);
+  letter-spacing:.08em;text-decoration:none;
+  border:1px solid var(--border2);padding:5px 14px;border-radius:3px;
+  transition:all .2s;white-space:nowrap;}
+.nav-link:hover{border-color:var(--accent);color:var(--accent);}
+
+.wrap{max-width:860px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:1;}
+
+.hero{text-align:center;padding:40px 0 50px;animation:fadeUp .6s ease;}
+.hero-sub{font-family:var(--orb);font-size:11px;color:var(--accent);
+  letter-spacing:.2em;margin-bottom:12px;}
+.hero-title{font-family:var(--orb);font-size:clamp(20px,4vw,34px);font-weight:900;
+  color:var(--amber);letter-spacing:.1em;line-height:1.2;margin-bottom:12px;
+  text-shadow:0 0 30px rgba(255,215,0,.4);}
+.hero-desc{font-size:15px;color:var(--text2);max-width:600px;margin:0 auto;line-height:1.8;}
+
+.section{
+  background:var(--surface);border:1px solid var(--border);border-radius:4px;
+  padding:28px 28px;margin-bottom:20px;position:relative;overflow:hidden;
+  animation:fadeUp .5s ease;
+}
+.section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent2),transparent);opacity:.4;}
+.section-num{font-family:var(--orb);font-size:10px;color:var(--accent);
+  letter-spacing:.2em;margin-bottom:8px;}
+.section-title{font-family:var(--orb);font-size:clamp(13px,2.5vw,17px);font-weight:700;
+  color:var(--amber);letter-spacing:.08em;margin-bottom:16px;}
+.section p{font-size:14px;color:var(--text2);margin-bottom:12px;line-height:1.8;}
+.section p:last-child{margin-bottom:0;}
+
+.highlight{color:var(--accent);font-weight:600;}
+.highlight-gold{color:var(--amber);font-weight:600;}
+.highlight-green{color:var(--green);font-weight:600;}
+
+/* Model cards */
+.model-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:16px;}
+.model-card{background:var(--surface2);border:1px solid var(--border2);border-radius:4px;padding:16px;}
+.model-card-name{font-family:var(--orb);font-size:12px;font-weight:700;margin-bottom:8px;}
+.model-card-name.gpt{color:#10a37f;}
+.model-card-name.claude{color:var(--amber);}
+.model-card-name.nblm{color:var(--purple, #bf5fff);}
+.model-card p{font-size:12px;color:var(--text2);line-height:1.7;}
+
+/* Criteria table */
+.criteria-grid{display:flex;flex-direction:column;gap:8px;margin-top:14px;}
+.criteria-row{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;
+  background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:10px 14px;}
+.criteria-num{font-family:var(--orb);font-size:11px;color:var(--accent);
+  background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);
+  padding:2px 8px;border-radius:2px;white-space:nowrap;align-self:center;}
+.criteria-content{}
+.criteria-name{font-family:var(--orb);font-size:11px;color:var(--text);font-weight:600;margin-bottom:3px;}
+.criteria-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+.criteria-row.subjective{border-color:rgba(255,215,0,.3);}
+.criteria-row.subjective .criteria-num{color:var(--amber);background:rgba(255,215,0,.1);border-color:rgba(255,215,0,.3);}
+
+/* Stats */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:14px;}
+.stat-item{background:var(--surface2);border:1px solid var(--border2);border-radius:3px;padding:12px 14px;}
+.stat-item-name{font-family:var(--orb);font-size:10px;color:var(--accent);letter-spacing:.08em;margin-bottom:5px;}
+.stat-item-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+
+/* Literature table */
+.lit-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:12px;}
+.lit-table th{padding:8px 12px;text-align:left;font-family:var(--orb);font-size:9px;
+  color:var(--accent2);letter-spacing:.1em;background:var(--surface2);
+  border-bottom:1px solid var(--border);}
+.lit-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top;}
+.lit-table tr:last-child td{border-bottom:none;}
+.lit-table tr:hover td{background:rgba(0,212,255,.02);}
+
+/* Unique badge */
+.unique-badge{display:inline-block;background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.3);
+  color:var(--green);font-family:var(--orb);font-size:9px;letter-spacing:.08em;
+  padding:2px 8px;border-radius:2px;margin-left:6px;vertical-align:middle;}
+
+.cta-wrap{text-align:center;padding:40px 0 20px;}
+.cta-btn{
+  display:inline-block;padding:16px 48px;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  color:#020408;border:none;border-radius:4px;
+  font-family:var(--orb);font-size:13px;font-weight:700;letter-spacing:.15em;
+  text-decoration:none;cursor:pointer;
+  box-shadow:0 0 24px rgba(0,212,255,.4);
+  transition:all .2s;text-transform:uppercase;
+  animation:pulse 2s ease-in-out infinite;
+}
+.cta-btn:hover{box-shadow:0 0 48px rgba(0,212,255,.6);transform:translateY(-2px);}
+.cta-sub{font-family:var(--orb);font-size:10px;color:var(--text3);
+  letter-spacing:.1em;margin-top:12px;}
+
+@media(max-width:600px){
+  .section{padding:20px 16px;}
+  .lit-table{display:block;overflow-x:auto;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">⚕ JEDİ MEDICAL ACADEMY — ARAŞTIRMA DOSYASI</div>
+  <a class="nav-link" href="mcq_evaluation_app.html">DEĞERLENDİRMEYE GEÇ →</a>
+</nav>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-sub">GİZLİ HOLOKRON · ARŞİV NO: GÜ-2026-MCQ-001</div>
+    <div class="hero-title">YAPAY ZEKA SINAVI:<br>ORTOPEDİ EĞİTİMİNDE MCQ KALİTESİ</div>
+    <div class="hero-desc">ChatGPT-4o, Claude Sonnet 4.6 ve NotebookLM tarafından üretilen çoktan seçmeli soruların kör uzman değerlendirmesiyle karşılaştırılması.</div>
+  </div>
+
+  <!-- AMAÇ -->
+  <div class="section">
+    <div class="section-num">01 — ARAŞTIRMA SORUSU</div>
+    <div class="section-title">Çalışmanın Amacı</div>
+    <p>Bu çalışmanın temel sorusu şudur: <span class="highlight">Farklı yapay zeka modelleri, aynı ders materyalinden eğitim amaçlı MCQ ürettiğinde, soru kalitesi birbirinden anlamlı biçimde ayrışır mı?</span></p>
+    <p>Dönem V tıp öğrencilerine yönelik ortopedi staj sonu sınavı için 14 ders başlığını kapsayan PPT + ses kaydı materyali üç farklı modele verilmiş; her modelden 50 soru (toplam 150 soru) üretilmiştir.</p>
+    <p>Sorular model etiketleri gizlenerek iki bağımsız uzman değerlendirici tarafından 8 kriterli rubrikle puanlanacak; ardından istatistiksel analizle modeller arası kalite farklılıkları ortaya konacaktır.</p>
+    
+  </div>
+
+  <!-- MODELLER -->
+  <div class="section">
+    <div class="section-num">02 — MODEL SEÇİMİ</div>
+    <div class="section-title">Neden Bu 3 Model?</div>
+    <p>Model seçiminde üç farklı yapay zeka paradigmasını temsil etmesi hedeflenmiştir:</p>
+    <div class="model-grid">
+      <div class="model-card">
+        <div class="model-card-name gpt">ChatGPT-4o</div>
+        <p>Genel amaçlı büyük dil modeli. Tıp eğitimindeki MCQ çalışmalarında en sık karşılaştırılan referans model. Sadece metin tabanlı prompt ile çalışır.</p>
+      </div>
+      <div class="model-card">
+        <div class="model-card-name claude">Claude Sonnet 4.6</div>
+        <p>Anthropic'in orta kademe modeli. Uzun bağlam işleme ve yapılandırılmış çıktı kalitesiyle öne çıkar. Literatürde MCQ üretimi için az test edilmiştir.</p>
+      </div>
+      <div class="model-card">
+        <div class="model-card-name nblm">NotebookLM</div>
+        <p>Google'ın RAG tabanlı modeli. Yüklenen kaynak belgelere sıkı sıkıya bağlı kalarak üretim yapar. Hallucination riski teorik olarak en düşük. Literatürde <span class="highlight-green">hiç test edilmemiş.</span></p>
+      </div>
+    </div>
+    <p style="margin-top:16px">Bu üçlü kombinasyon — genel LLM + gelişmiş LLM + RAG tabanlı model — literatürde <span class="highlight">ilk kez</span> ortopedi alanında karşılaştırılmaktadır.</p>
+  </div>
+
+  <!-- KRİTERLER -->
+  <div class="section">
+    <div class="section-num">03 — DEĞERLENDİRME RUBRİĞİ</div>
+    <div class="section-title">8 Kriter ve Gerekçeleri</div>
+    <p>Her soru 8 kriter üzerinden 1–4 puan alır. Maksimum puan: <span class="highlight">32</span>. Puanlama Likert tipidir: 1=Yetersiz, 2=Orta, 3=İyi, 4=Mükemmel.</p>
+    <div class="criteria-grid">
+      <div class="criteria-row">
+        <span class="criteria-num">C1</span>
+        <div class="criteria-content">
+          <div class="criteria-name">İçerik Doğruluğu</div>
+          <div class="criteria-desc">Soru ve doğru yanıtın güncel tıp bilgisiyle uyumu. Hallucination veya faktüel hata varlığı bu kriterle tespit edilir.</div>
+        </div>
+      </div>
+      <div class="criteria-row">
+        <span class="criteria-num">C2</span>
+        <div class="criteria-content">
+          <div class="criteria-name">Klinik Uygunluk</div>
+          <div class="criteria-desc">Sorunun gerçek klinik pratiği yansıtıp yansıtmadığı. Sadece teorik bilgi sorgulamak yerine klinisyen bakış açısını ölçer.</div>
+        </div>
+      </div>
+      <div class="criteria-row">
+        <span class="criteria-num">C3</span>
+        <div class="criteria-content">
+          <div class="criteria-name">Bloom Seviyesi</div>
+          <div class="criteria-desc">Anderson & Krathwohl (2001) revize taksonomisine göre bilişsel düzey: Hatırlama (1) → Anlama (2) → Uygulama (3) → Analiz (4). Üst düzey sorular daha değerlidir.</div>
+        </div>
+      </div>
+      <div class="criteria-row">
+        <span class="criteria-num">C4</span>
+        <div class="criteria-content">
+          <div class="criteria-name">Stem Kalitesi</div>
+          <div class="criteria-desc">Soru kökünün netliği, tek yorumluluğu ve gereksiz bilgi içermemesi. "Hangisi yanlıştır" formatından kaçınılmalıdır.</div>
+        </div>
+      </div>
+      <div class="criteria-row">
+        <span class="criteria-num">C5</span>
+        <div class="criteria-content">
+          <div class="criteria-name">Distraktör Kalitesi</div>
+          <div class="criteria-desc">Yanlış şıkların makullüğü ve homojenliği. Açıkça saçma ya da hemen elenebilir distraktörler psikometrik kaliteyi düşürür.</div>
+        </div>
+      </div>
+      <div class="criteria-row">
+        <span class="criteria-num">C6</span>
+        <div class="criteria-content">
+          <div class="criteria-name">Müfredat Uyumu</div>
+          <div class="criteria-desc">Sorunun yüklenen ders materyaliyle örtüşmesi. Materyal dışı genel tıp bilgisinden üretilen sorular bu kriterle düşük puan alır.</div>
+        </div>
+      </div>
+      <div class="criteria-row">
+        <span class="criteria-num">C7</span>
+        <div class="criteria-content">
+          <div class="criteria-name">Hallucination Riski</div>
+          <div class="criteria-desc">Soruda uydurulmuş istatistik, var olmayan kılavuz referansı veya yanlış anatomi/fizyoloji bilgisi varlığı. 4=güvenilir, 1=ciddi hallucination riski.</div>
+        </div>
+      </div>
+      <div class="criteria-row subjective">
+        <span class="criteria-num">C8</span>
+        <div class="criteria-content">
+          <div class="criteria-name">Öznel Beğeni ★</div>
+          <div class="criteria-desc">"Bu soruyu gerçek staj sonu sınavında kullanır mıydım?" Deneyimli klinisyenin sezgisel kalite yargısını ölçer. Nihai soru seçiminde ağırlıklı kriterdir.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- İSTATİSTİK -->
+  <div class="section">
+    <div class="section-num">04 — İSTATİSTİK PLANI</div>
+    <div class="section-title">Analitik Strateji</div>
+    <p>Veriler normal dağılım göstermeyeceği varsayımıyla parametrik olmayan testler kullanılacaktır:</p>
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="stat-item-name">Kruskal-Wallis + Dunn</div>
+        <div class="stat-item-desc">3 model arasında her kriter için puan farklılıkları. Post-hoc Dunn testi ile ikili karşılaştırmalar. Bonferroni düzeltmesi uygulanacak.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">Cohen's Kappa (Ağırlıklı)</div>
+        <div class="stat-item-desc">İki değerlendiricinin her kriter için puanları arasındaki uyum. Kabul edilebilir eşik: κ≥0.60.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">ICC (İntraclass Correlation)</div>
+        <div class="stat-item-desc">Toplam puan üzerinden değerlendirici arası güvenilirlik. ICC≥0.70 hedeflenmektedir.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">Ki-Kare Testi</div>
+        <div class="stat-item-desc">Bloom düzeyi dağılımı ve hallucination oranı için model karşılaştırması. Kategorik veriler için.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">Cronbach Alpha</div>
+        <div class="stat-item-desc">8 kriterlik rubriğin iç tutarlılığı. α≥0.70 kabul edilebilir iç tutarlılık eşiği.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">Spearman Korelasyon</div>
+        <div class="stat-item-desc">Toplam kalite puanı ile öznel beğeni skoru arasındaki ilişki. Kriter bazlı puanın nihai seçimi ne kadar yordadığını test eder.</div>
+      </div>
+    </div>
+    <p style="margin-top:16px">Anlamlılık düzeyi <span class="highlight">p&lt;0.05</span>. İstatistiksel analizler SPSS v26 veya R ile gerçekleştirilecektir.</p>
+  </div>
+
+  <!-- LİTERATÜR -->
+  <div class="section">
+    <div class="section-num">05 — LİTERATÜR TARAMASI</div>
+    <div class="section-title">Benzer Çalışmalar ve Bu Çalışmanın Özgünlüğü</div>
+    <p>2023–2026 yılları arasında tıp eğitiminde AI destekli MCQ üretimine ilişkin yapılan çalışmaların özeti:</p>
+    <div style="overflow-x:auto">
+    <table class="lit-table">
+      <thead><tr>
+        <th>Çalışma</th><th>Modeller</th><th>Alan</th><th>Tasarım</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>Law et al., 2025 (BMC Med Educ)</td><td>ChatGPT-4o vs İnsan</td><td>Acil Tıp</td><td>Kör uzman, psikometrik analiz</td></tr>
+        <tr><td>Boufrikha et al., 2026</td><td>DeepSeek, ChatGPT, Perplexity</td><td>Hematoloji</td><td>3 model karşılaştırma</td></tr>
+        <tr><td>Karahan & Emekli, 2025</td><td>7 chatbot</td><td>Tıbbi görüntüleme</td><td>Lecture materials bazlı</td></tr>
+        <tr><td>Kim et al., 2025</td><td>ChatGPT-4o</td><td>Pediatri</td><td>Structured prompt, 100 MCQ</td></tr>
+        <tr><td>Uhm et al., 2024</td><td>GPT-4o, Claude 3.5, OpenBioLLM</td><td>Klinik genetik</td><td>3 model, blinded eval</td></tr>
+        <tr><td><strong>Bu çalışma, 2026</strong> <span class="unique-badge">ÖZGÜN</span></td><td><strong>ChatGPT-4o + Claude Sonnet 4.6 + NotebookLM</strong></td><td><strong>Ortopedi</strong></td><td><strong>Kör uzman, 8 kriter, RAG dahil</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:16px">Bu çalışmayı literatürden ayıran dört temel özellik:</p>
+    <p><span class="highlight-green">1. Alan özgünlüğü:</span> Ortopedi alanında MCQ kalitesi karşılaştırması literatürde ilk kez yapılmaktadır.</p>
+    <p><span class="highlight-green">2. Model seti:</span> NotebookLM (RAG tabanlı) hiçbir MCQ kalite çalışmasında daha önce test edilmemiştir.</p>
+    <p><span class="highlight-green">3. Materyal bazlı üretim:</span> Tüm modeller aynı PPT+ses kaydı materyalinden üretim yapmıştır — müfredat uyumu ölçülebilir.</p>
+    <p><span class="highlight-green">4. Öznel kriter:</span> Deneyimli klinisyen sezgisini ölçen öznel beğeni kriteri (C8) standart rubrik çalışmalarında yoktur.</p>
+  </div>
+
+
+  <!-- GEÇERLİLİK -->
+  <div class="section" style="animation-delay:.1s">
+    <div class="section-num">06 — ÖLÇÜM GEÇERLİLİĞİ</div>
+    <div class="section-title">Değerlendirme Aracının Geçerlilik Testleri</div>
+    <p>Rubriğin psikometrik kalitesi dört yöntemle test edilecektir:</p>
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="stat-item-name">İçerik Geçerliliği (Content Validity)</div>
+        <div class="stat-item-desc">8 kriterin literatürdeki MCQ kalite çerçeveleriyle (Boufrikha 2026, Kim 2025) örtüşmesi iki kıdemli öğretim üyesi tarafından teyit edilmiştir. Her kriter için kuramsal dayanak mevcuttur.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">Değerlendirici Arası Güvenilirlik</div>
+        <div class="stat-item-desc">İki bağımsız değerlendirici aynı 150 soruyu kör olarak puanlayacak. Her kriter için ağırlıklı Cohen's Kappa (κ≥0.60 hedef) ve toplam puan için ICC (≥0.70) hesaplanacak.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">İç Tutarlılık (Internal Consistency)</div>
+        <div class="stat-item-desc">8 kriterin aynı yapıyı ölçüp ölçmediği Cronbach Alpha (α≥0.70) ile test edilecek. Düşük katkı sağlayan kriterler faktör analiziyle belirlenecek.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">Yapı Geçerliliği (Construct Validity)</div>
+        <div class="stat-item-desc">Objektif kriter puanları (C1–C7) ile öznel beğeni skoru (C8) arasındaki Spearman korelasyonu test edilecek. Yüksek korelasyon rubriğin klinisyen sezgisiyle örtüştüğünü gösterir.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">Eşzamanlı Geçerlilik (Concurrent Validity)</div>
+        <div class="stat-item-desc">Hallucination riski kriteri (C7) puan 1–2 olan sorular iki değerlendirici tarafından bağımsız olarak faktüel hata içerip içermediği açısından yeniden incelenerek kriter ile gerçek hata oranı karşılaştırılacak.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">Nihai Soru Seçimi ile Korelasyon</div>
+        <div class="stat-item-desc">Her değerlendiricinin nihai soru seçimi (toggle ile işaretlenen 50 soru) ile toplam puan sıralaması arasındaki Spearman korelasyonu hesaplanacak. Yüksek korelasyon rubriğin seçim kararını yordadığını kanıtlar.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="section">
+    <div class="section-num">06 — ÖLÇÜM GEÇERLİLİĞİ</div>
+    <div class="section-title">Değerlendirme Aracının Geçerlilik Testleri</div>
+    <p>Rubriğin psikometrik kalitesi dört yöntemle test edilecektir:</p>
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="stat-item-name">İçerik Geçerliliği</div>
+        <div class="stat-item-desc">8 kriterin literatürdeki MCQ kalite çerçeveleriyle (Boufrikha 2026, Kim 2025) örtüşmesi iki kıdemli öğretim üyesi tarafından teyit edilmiştir. Her kriter için kuramsal dayanak mevcuttur.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">Değerlendirici Arası Güvenilirlik</div>
+        <div class="stat-item-desc">İki bağımsız değerlendirici aynı 150 soruyu kör olarak puanlayacak. Her kriter için ağırlıklı Cohen's Kappa (κ≥0.60) ve toplam puan için ICC (≥0.70) hesaplanacak.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">İç Tutarlılık</div>
+        <div class="stat-item-desc">8 kriterin aynı yapıyı ölçüp ölçmediği Cronbach Alpha (α≥0.70) ile test edilecek. Düşük katkı sağlayan kriterler faktör analiziyle belirlenecek.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">Yapı Geçerliliği</div>
+        <div class="stat-item-desc">Objektif kriter puanları (C1–C7) ile öznel beğeni skoru (C8) arasındaki Spearman korelasyonu test edilecek. Yüksek korelasyon rubriğin klinisyen sezgisiyle örtüştüğünü gösterir.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">Eşzamanlı Geçerlilik</div>
+        <div class="stat-item-desc">Hallucination kriteri (C7) düşük puan alan sorular bağımsız olarak faktüel hata içerip içermediği açısından yeniden incelenerek kriter ile gerçek hata oranı karşılaştırılacak.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-item-name">Seçim Korelasyonu</div>
+        <div class="stat-item-desc">Nihai soru seçimi (50 soru toggle) ile toplam puan sıralaması arasındaki Spearman korelasyonu hesaplanacak. Yüksek korelasyon rubriğin seçim kararını yordadığını kanıtlar.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-wrap">
+    <a class="cta-btn" href="mcq_evaluation_app.html">⚡ DEĞERLENDİRMEYE BAŞLA</a>
+    <div class="cta-sub">"DO OR DO NOT. THERE IS NO TRY." — YODA</div>
+  </div>
+
+</div>
+</body>
+</html>
