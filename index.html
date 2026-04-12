@@ -853,6 +853,14 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
 </div><!-- /main-app -->
 
 <script>
+// ── CHARACTERS ────────────────────────────────────────────────────────────────
+const CHARS = {
+  'Yoda__Levent_Umur':   { name:'YODA',    color:'#39ff14', alias:'Doç. Dr. Levent Umur' },
+  'ObiWan__Enes_Sari':   { name:'OBI-WAN', color:'#00d4ff', alias:'Doç. Dr. Enes Sarı' },
+  'Anakin__Utku_Gurhan': { name:'ANAKİN',  color:'#ffd700', alias:'Yrd. Doç. Dr. Utku Gürhan' },
+};
+
+
 
 function selectChar(el) {
   const val = el.dataset.val;
