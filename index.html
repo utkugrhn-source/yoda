@@ -474,7 +474,7 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
 @keyframes charBuildIn{0%{opacity:0;transform:scale(0.3) translateY(24px)}65%{transform:scale(1.1) translateY(-3px)}100%{opacity:1;transform:scale(1) translateY(0)}}
 @keyframes bladeExtend{from{opacity:0;transform:scaleY(0);transform-origin:bottom center}to{opacity:1;transform:scaleY(1);transform-origin:bottom center}}
 
-.char-select-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px;}
+.char-select-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:4px;}@media(min-width:520px){.char-select-grid{grid-template-columns:repeat(4,1fr);}}
 
 .char-select-card{
   background:var(--surface2);border:1px solid var(--border2);border-radius:6px;
@@ -743,6 +743,48 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
           <div class="char-select-rank">The Chosen One</div>
         </div>
 
+        <!-- LUKE -->
+        <div class="char-select-card" id="card-luke" data-val="Luke__Yakup_Kahveci" onclick="selectChar(this)" style="--saber-col:#ff6b35">
+          <div class="char-select-svg" id="svg-luke">
+            <svg viewBox="0 0 80 130" xmlns="http://www.w3.org/2000/svg" width="72" height="117">
+              <rect id="blade-luke" x="67" y="12" width="2.5" height="52" rx="1.2" fill="#ff6b35" opacity="0"/>
+              <rect x="67.2" y="12" width="2" height="52" rx="1" fill="#ffaa80" id="blade-luke-inner" opacity="0"/>
+              <rect x="66" y="64" width="5" height="12" rx="2" fill="#2a2020"/>
+              <rect x="66.5" y="65" width="4" height="10" rx="1.5" fill="#4a3a30"/>
+              <ellipse cx="40" cy="93" rx="23" ry="25" fill="#1a1a2a"/>
+              <rect x="18" y="78" width="44" height="34" rx="3" fill="#1a1a2a"/>
+              <rect x="20" y="80" width="40" height="16" rx="2" fill="#252535"/>
+              <rect x="20" y="82" width="40" height="3" rx="1" fill="#ff6b35" opacity=".6"/>
+              <rect x="20" y="92" width="40" height="2" rx="1" fill="#ff6b35" opacity=".4"/>
+              <line x1="28" y1="82" x2="26" y2="110" stroke="#3a3a4a" stroke-width="1.5"/>
+              <line x1="40" y1="80" x2="40" y2="112" stroke="#3a3a4a" stroke-width="1"/>
+              <line x1="52" y1="82" x2="54" y2="110" stroke="#3a3a4a" stroke-width="1.5"/>
+              <rect x="24" y="99" width="32" height="7" rx="2" fill="#2a2030"/>
+              <rect x="33" y="62" width="14" height="17" rx="4" fill="#d4a870"/>
+              <ellipse cx="40" cy="47" rx="21" ry="22" fill="#e0b880"/>
+              <path d="M19 40 Q24 18 40 20 Q56 18 61 40" fill="#c8a030"/>
+              <path d="M19 45 Q18 38 20 32" fill="none" stroke="#b89020" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M61 45 Q62 38 60 32" fill="none" stroke="#b89020" stroke-width="2.5" stroke-linecap="round"/>
+              <ellipse cx="28" cy="45" rx="8" ry="6" fill="#f0e8d0"/>
+              <ellipse cx="52" cy="45" rx="8" ry="6" fill="#f0e8d0"/>
+              <ellipse cx="28" cy="45" rx="5" ry="4" fill="#4a78c0"/>
+              <ellipse cx="52" cy="45" rx="5" ry="4" fill="#4a78c0"/>
+              <circle cx="28" cy="45" r="3" fill="#1a2860"/>
+              <circle cx="52" cy="45" r="3" fill="#1a2860"/>
+              <circle cx="29" cy="44" r="1.2" fill="white" opacity=".9"/>
+              <circle cx="53" cy="44" r="1.2" fill="white" opacity=".9"/>
+              <path d="M21 38 Q28 35 35 38" fill="none" stroke="#a08020" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M45 38 Q52 35 59 38" fill="none" stroke="#a08020" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="37" cy="52" r="1.8" fill="#c89860"/>
+              <circle cx="43" cy="52" r="1.8" fill="#c89860"/>
+              <path d="M32 60 Q40 65 48 60" fill="none" stroke="#a07840" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="char-select-name" style="color:#ff6b35">LUKE</div>
+          <div class="char-select-title">Op. Dr. Yakup Kahveci</div>
+          <div class="char-select-rank">Jedi Knight</div>
+        </div>
+
       </div>
     </div>
     <div style="margin-bottom:16px">
@@ -858,6 +900,7 @@ const CHARS = {
   'Yoda__Levent_Umur':   { name:'YODA',    color:'#39ff14', alias:'Doç. Dr. Levent Umur' },
   'ObiWan__Enes_Sari':   { name:'OBI-WAN', color:'#00d4ff', alias:'Doç. Dr. Enes Sarı' },
   'Anakin__Utku_Gurhan': { name:'ANAKIN',  color:'#ffd700', alias:'Yrd. Doç. Dr. Utku Gürhan' },
+  'Luke__Yakup_Kahveci':  { name:'LUKE',    color:'#ff6b35', alias:'Op. Dr. Yakup Kahveci' },
 };
 
 
@@ -879,7 +922,7 @@ function selectChar(el) {
 
   // Animate blade extending from handle upward
   const charKey = val.split('__')[0].toLowerCase().replace('-','');
-  const bladeId = val.startsWith('Yoda') ? 'yoda' : val.startsWith('ObiWan') ? 'obiwan' : 'anakin';
+  const bladeId = val.startsWith('Yoda') ? 'yoda' : val.startsWith('ObiWan') ? 'obiwan' : val.startsWith('Luke') ? 'luke' : 'anakin';
   const blade = document.getElementById('blade-' + bladeId);
   const bladeInner = document.getElementById('blade-' + bladeId + '-inner');
 
@@ -937,6 +980,22 @@ function charSVG(key, size=32) {
     <path d="M9 12 Q12 10 15 12" fill="none" stroke="#4a2c10" stroke-width="1.2" stroke-linecap="round"/>
     <path d="M17 12 Q20 10 23 12" fill="none" stroke="#4a2c10" stroke-width="1.2" stroke-linecap="round"/>
     <ellipse cx="16" cy="23" rx="5" ry="3" fill="#7a4a24"/>
+    <rect x="24" y="10" width="1.5" height="14" rx=".7" fill="${col}" opacity=".9"/>
+    <rect x="23.5" y="9.5" width="2.5" height="15" rx="1.2" fill="${col}" opacity=".15"/>
+  </svg>`;
+  if (key.startsWith('Luke')) return `<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <rect width="32" height="32" fill="#0d0810"/>
+    <ellipse cx="16" cy="18" rx="10" ry="11" fill="#e0b880"/>
+    <path d="M7 12 Q10 5 16 6 Q22 5 25 12" fill="#c8a030"/>
+    <ellipse cx="11" cy="16" rx="3.5" ry="2.5" fill="#f0e8d0"/>
+    <ellipse cx="21" cy="16" rx="3.5" ry="2.5" fill="#f0e8d0"/>
+    <ellipse cx="11" cy="16" rx="2" ry="1.8" fill="#4a78c0"/>
+    <ellipse cx="21" cy="16" rx="2" ry="1.8" fill="#4a78c0"/>
+    <circle cx="11" cy="16" r="1.2" fill="#1a2860"/>
+    <circle cx="21" cy="16" r="1.2" fill="#1a2860"/>
+    <circle cx="11.5" cy="15.5" r=".5" fill="white"/>
+    <circle cx="21.5" cy="15.5" r=".5" fill="white"/>
+    <path d="M12 23 Q16 26 20 23" fill="none" stroke="#a07840" stroke-width="1" stroke-linecap="round"/>
     <rect x="24" y="10" width="1.5" height="14" rx=".7" fill="${col}" opacity=".9"/>
     <rect x="23.5" y="9.5" width="2.5" height="15" rx="1.2" fill="${col}" opacity=".15"/>
   </svg>`;
