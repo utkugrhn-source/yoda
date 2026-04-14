@@ -3796,6 +3796,15 @@ function download(name,content,mime) {
   a.download=name;a.click();
 }
 
+window.addEventListener('beforeunload', function(e) {
+  const evalView = document.getElementById('view-eval');
+  if (evalView && evalView.classList.contains('active') && completedCount() > 0) {
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+  }
+});
+
 </script>
 </body>
 </html>
