@@ -4116,10 +4116,13 @@ function persistVault() {
 
 async function syncScoreToRedis(qid) {
   try {
+    const sc = state.scores[qid] || {};
+    // Boş skor gönderme
+    if (!Object.values(sc).some(v => v > 0)) return;
     await fetch('/api/vault', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({charKey:state.reviewer, qid:qid, scores:state.scores[qid]||{}})
+      body: JSON.stringify({charKey:state.reviewer, qid:qid, scores:sc})
     });
   } catch(e) {}
 }
@@ -4450,13 +4453,26 @@ async function renderSharedResults() {
         Object.keys(localCombined).forEach(charKey => {
           if (!merged[charKey]) merged[charKey] = localCombined[charKey];
           else {
-            // Soru bazında birleştir
+            // Soru bazında birleştir — dolu skor önceliği var
             const localScores = (localCombined[charKey] || {}).scores || {};
             Object.keys(localScores).forEach(qid => {
               if (!merged[charKey].scores) merged[charKey].scores = {};
-              if (!merged[charKey].scores[qid]) {
-                merged[charKey].scores[qid] = localScores[qid];
+              const localQ = localScores[qid];
+              const redisQ = merged[charKey].scores[qid];
+              const localFull = localQ && Object.values(localQ).some(v => v > 0);
+              const redisFull = redisQ && Object.values(redisQ).some(v => v > 0);
+              if (!redisFull && localFull) {
+                // Redis boş, lokal dolu → lokal kullan
+                merged[charKey].scores[qid] = localQ;
+              } else if (redisFull && localFull) {
+                // İkisi de dolu → kriter bazında dolu olan kazanır
+                const mergedQ = { ...redisQ };
+                Object.keys(localQ).forEach(k => {
+                  if (localQ[k] && localQ[k] > 0) mergedQ[k] = localQ[k];
+                });
+                merged[charKey].scores[qid] = mergedQ;
               }
+              // Redis dolu, lokal boş → Redis kalır (bir şey yapma)
             });
           }
         });
