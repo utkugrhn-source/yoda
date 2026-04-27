@@ -3970,6 +3970,7 @@ function setScore(qid, criterion, val) {
   });
   renderCharBars();
   persistVault();
+  syncScoreToRedis(qid);
 }
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
@@ -4094,10 +4095,30 @@ function persistVault() {
       timestamp:new Date().toISOString(),scores:state.scores,selections:state.selections};
     localStorage.setItem('mcq_vault_'+state.reviewer,JSON.stringify(payload));
     const combined=JSON.parse(localStorage.getItem('mcq_vault_combined')||'{}');
-    combined[state.reviewer]=payload;
+    combined[state.reviewer]={scores:state.scores,selections:state.selections,ts:Date.now()};
     localStorage.setItem('mcq_vault_combined',JSON.stringify(combined));
-  } catch(e){}
+  } catch(e) {}
 }
+
+async function syncScoreToRedis(qid) {
+  try {
+    await fetch('/api/vault', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({charKey:state.reviewer, qid:qid, scores:state.scores[qid]||{}})
+    });
+  } catch(e) {}
+}
+
+async function fetchRedisVault() {
+  try {
+    const res = await fetch('/api/vault');
+    if (!res.ok) return null;
+    return await res.json();
+  } catch(e) { return null; }
+}
+
+
 function saveToVault() {
   persistVault();
   const s=document.getElementById('vault-status');
@@ -4180,7 +4201,7 @@ function closeObj(e) {
 
 let currentResultsView = 'personal';
 
-function switchResultsView(v) {
+async function switchResultsView(v) {
   currentResultsView = v;
   document.getElementById('rv-personal').classList.toggle('active', v==='personal');
   document.getElementById('rv-shared').classList.toggle('active', v==='shared');
@@ -4192,7 +4213,7 @@ function switchResultsView(v) {
   document.getElementById('rv-shared').style.background = v==='shared'?'rgba(255,215,0,.06)':'';
   document.getElementById('personal-results-view').style.display = v==='personal'?'block':'none';
   document.getElementById('shared-results-view').style.display = v==='shared'?'block':'none';
-  if (v==='shared') renderSharedResults();
+  if (v==='shared') await renderSharedResults();
 }
 
 function getCharKey(name) {
@@ -4203,9 +4224,17 @@ function getCharKey(name) {
   return name;
 }
 
-function renderSharedResults() {
-  // Vault'tan tüm değerlendiricilerin verilerini al
-  const combined = JSON.parse(localStorage.getItem('mcq_vault_combined') || '{}');
+async function renderSharedResults() {
+  // Önce Redis'ten çek, yoksa localStorage'a dön
+  const redisData = await fetchRedisVault();
+  let combined = redisData || JSON.parse(localStorage.getItem('mcq_vault_combined') || '{}');
+  // Redis verisini localStorage'a da yaz (cache)
+  if (redisData) {
+    localStorage.setItem('mcq_vault_combined', JSON.stringify(redisData));
+    // Status göster
+    const statusEl = document.getElementById('vault-status');
+    if (statusEl) statusEl.textContent = "☁ Redis'ten yuklendi — " + Object.keys(redisData).length + " degerlendirici";
+  }
   const chars = ['YODA','OBI-WAN','ANAKIN','LUKE'];
   const charKeys = {
     'YODA':'Yoda__Levent_Umur',
