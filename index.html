@@ -4414,6 +4414,31 @@ async function renderSharedResults() {
   }).join('');
 }
 
+
+// ── AUTO SYNC localStorage → Redis ──────────────────────────────────────────
+// Sayfa açılınca mevcut localStorage verilerini Redis'e yükle (bir kerelik)
+(async function autoSyncToRedis() {
+  try {
+    const combined = JSON.parse(localStorage.getItem('mcq_vault_combined') || '{}');
+    const charKeys = Object.keys(combined);
+    if (charKeys.length === 0) return;
+    let syncCount = 0;
+    for (const charKey of charKeys) {
+      const data = combined[charKey];
+      if (!data || !data.scores) continue;
+      for (const qid of Object.keys(data.scores)) {
+        await fetch('/api/vault', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ charKey, qid, scores: data.scores[qid] })
+        }).catch(()=>{});
+        syncCount++;
+      }
+    }
+    if (syncCount > 0) console.log('[YODA] ' + syncCount + ' skor Redis e yuklendi');
+  } catch(e) {}
+})();
+
 </script>
 </body>
 </html>
