@@ -47,7 +47,9 @@ body::before{content:'';position:fixed;inset:0;
 #crawl-play-btn:hover .play-circle{box-shadow:0 0 60px rgba(255,232,31,.7);}
 
 @keyframes crawlScroll {
-  from { transform: rotateX(22deg) translateY(0); }
+  from { top: 100%; }
+  to   { top: -6000px; }
+}
   to   { transform: rotateX(22deg) translateY(-480%); }
 }
   to   { transform: rotateX(20deg) translateY(-500%); }
@@ -624,8 +626,8 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
   <div style="position:absolute;bottom:0;left:0;right:0;height:20%;background:linear-gradient(to top,#000 0%,transparent 100%);pointer-events:none;z-index:10;"></div>
 
   <!-- Kayan yazı — perspective container -->
-  <div style="position:absolute;inset:0;overflow:hidden;z-index:5;perspective:250px;perspective-origin:50% -10%;">
-    <div id="crawl-body" style="position:absolute;bottom:0;left:0;right:0;transform-origin:50% 100%;transform:rotateX(22deg) translateY(0);opacity:0;">
+  <div style="position:absolute;inset:0;overflow:hidden;z-index:5;perspective:300px;perspective-origin:50% 60px;">
+    <div id="crawl-body" style="position:absolute;top:100%;left:0;right:0;transform-origin:50% 0%;transform:rotateX(25deg);opacity:0;">
       <div style="color:#ffe81f;font-family:'News Cycle','Arial Narrow',Arial,sans-serif;font-size:clamp(20px,4vw,32px);font-weight:700;text-align:justify;line-height:1.85;letter-spacing:.02em;width:55%;margin:0 auto;padding-bottom:600px;">
         <div style="text-align:center;font-size:clamp(18px,3.5vw,28px);margin-bottom:1.6em;letter-spacing:.2em;font-weight:700;">YAPAY ZEKA SINAVI</div>
         <p style="margin-bottom:1.3em;">Yapay zekanın tıp eğitimine yürüyüşü durdurulamaz hale gelmiştir. ChatGPT, Claude ve NotebookLM galaksinin dört bir yanında çoktan seçmeli sorular üretmektedir.</p>
@@ -1464,7 +1466,7 @@ function startCrawlSequence() {
     const body = document.getElementById('crawl-body');
     if (!body) return;
     body.style.animation = 'none';
-    body.style.transform = 'rotateX(22deg) translateY(0)';
+    body.style.top = '100%';
     body.style.opacity = '1';
     void body.offsetHeight;
     body.style.animation = 'crawlScroll 40s linear forwards';
