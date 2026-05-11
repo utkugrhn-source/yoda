@@ -4121,16 +4121,80 @@ function persistVault() {
 }
 
 async function syncScoreToRedis(qid) {
+  const sc = state.scores[qid] || {};
+  // Boş skor gönderme
+  if (!Object.values(sc).some(v => v > 0)) return;
+
+  // Pending kuyruğa ekle (her zaman, sync başarılı olursa siliriz)
+  const pending = JSON.parse(localStorage.getItem('mcq_pending_sync') || '{}');
+  const pkey = state.reviewer + ':' + qid;
+  pending[pkey] = { charKey: state.reviewer, qid: qid, scores: sc, ts: Date.now() };
+  localStorage.setItem('mcq_pending_sync', JSON.stringify(pending));
+  updateSyncStatusIndicator();
+
+  // Redis'e yaz
   try {
-    const sc = state.scores[qid] || {};
-    // Boş skor gönderme
-    if (!Object.values(sc).some(v => v > 0)) return;
-    await fetch('/api/vault', {
+    const res = await fetch('/api/vault', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({charKey:state.reviewer, qid:qid, scores:sc})
     });
-  } catch(e) {}
+    if (res && res.ok) {
+      // Başarılı — pending'den sil
+      const p = JSON.parse(localStorage.getItem('mcq_pending_sync') || '{}');
+      delete p[pkey];
+      localStorage.setItem('mcq_pending_sync', JSON.stringify(p));
+      updateSyncStatusIndicator();
+    }
+  } catch(e) {
+    // Pending'de kaldı — sonra retry edilecek
+    updateSyncStatusIndicator();
+  }
+}
+
+// Pending kuyruktaki tüm bekleyen sync'leri tekrar dene
+async function retryPendingSyncs() {
+  const pending = JSON.parse(localStorage.getItem('mcq_pending_sync') || '{}');
+  const keys = Object.keys(pending);
+  if (keys.length === 0) return { ok: 0, fail: 0 };
+  let ok = 0, fail = 0;
+  for (const k of keys) {
+    const item = pending[k];
+    try {
+      const res = await fetch('/api/vault', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({charKey: item.charKey, qid: item.qid, scores: item.scores})
+      });
+      if (res && res.ok) {
+        const p = JSON.parse(localStorage.getItem('mcq_pending_sync') || '{}');
+        delete p[k];
+        localStorage.setItem('mcq_pending_sync', JSON.stringify(p));
+        ok++;
+      } else {
+        fail++;
+      }
+    } catch(e) { fail++; }
+  }
+  updateSyncStatusIndicator();
+  return { ok, fail };
+}
+
+// Sync durum göstergesini güncelle (sağ üst köşede)
+function updateSyncStatusIndicator() {
+  const ind = document.getElementById('sync-status-ind');
+  if (!ind) return;
+  const pending = JSON.parse(localStorage.getItem('mcq_pending_sync') || '{}');
+  const count = Object.keys(pending).length;
+  if (count === 0) {
+    ind.innerHTML = '☁ <span style="color:#39ff14">Tüm veriler bulutta</span>';
+    ind.style.background = 'rgba(57,255,20,0.08)';
+    ind.style.borderColor = 'rgba(57,255,20,0.3)';
+  } else {
+    ind.innerHTML = '⚠ <span style="color:#ffb700">' + count + ' veri beklemede</span> <span style="font-size:10px;opacity:.7;text-decoration:underline">YENİDEN DENE</span>';
+    ind.style.background = 'rgba(255,183,0,0.1)';
+    ind.style.borderColor = 'rgba(255,183,0,0.4)';
+  }
 }
 
 async function fetchRedisVault() {
@@ -4507,9 +4571,31 @@ async function renderSharedResults() {
       }
     }
     if (syncCount > 0) console.log('[YODA] ' + syncCount + ' skor Redis e yuklendi');
+
+  // Bekleyen sync'leri de tekrar dene
+  setTimeout(retryPendingSyncs, 2000);
   } catch(e) {}
 })();
 
 </script>
+  <!-- Cloud sync status indicator -->
+  <div id="sync-status-ind" onclick="retryPendingSyncs()" style="
+    position:fixed;
+    top:14px;
+    right:14px;
+    z-index:500;
+    font-family:'Orbitron',monospace;
+    font-size:11px;
+    padding:6px 12px;
+    border:1px solid rgba(57,255,20,0.3);
+    border-radius:4px;
+    background:rgba(57,255,20,0.08);
+    color:#fff;
+    letter-spacing:.05em;
+    cursor:pointer;
+    user-select:none;
+    display:none;
+  ">☁ Tüm veriler bulutta</div>
+
 </body>
 </html>
