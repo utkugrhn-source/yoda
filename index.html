@@ -3903,6 +3903,10 @@ function startSession() {
   renderQuestion(0);
   renderCharBars();
   switchView('eval');
+  // Sync status indicator göster + periyodik retry başlat
+  const sind=document.getElementById('sync-status-ind');
+  if(sind){sind.style.display='block';updateSyncStatusIndicator();}
+  if(!window._syncRetryInterval){window._syncRetryInterval=setInterval(retryPendingSyncs,30000);}
 }
 
 function renderQuestion(idx) {
