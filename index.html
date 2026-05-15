@@ -1090,7 +1090,7 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
         </div>
 
         <!-- LUKE -->
-        <div class="char-select-card" id="card-luke" data-val="Luke__Yakup_Kahveci" onclick="selectChar(this)" style="--saber-col:#ff6b35">
+        <div class="char-select-card" id="card-luke" data-val="Luke__Yakup_Kahve" onclick="selectChar(this)" style="--saber-col:#ff6b35">
           <div class="char-select-svg" id="svg-luke">
             <svg viewBox="0 0 80 130" xmlns="http://www.w3.org/2000/svg" width="72" height="117">
               <rect id="blade-luke" x="67" y="12" width="2.5" height="52" rx="1.2" fill="#ff6b35" opacity="0"/>
@@ -1127,7 +1127,7 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
             </svg>
           </div>
           <div class="char-select-name" style="color:#ff6b35">LUKE</div>
-          <div class="char-select-title">Op. Dr. Yakup Kahveci</div>
+          <div class="char-select-title">Op. Dr. Yakup Kahve</div>
           <div class="char-select-rank">Jedi Knight</div>
         </div>
 
@@ -1292,7 +1292,7 @@ const CHARS = {
   'Yoda__Levent_Umur':   { name:'YODA',    color:'#39ff14', alias:'Doç. Dr. Levent Umur' },
   'ObiWan__Enes_Sari':   { name:'OBI-WAN', color:'#00d4ff', alias:'Doç. Dr. Enes Sarı' },
   'Anakin__Utku_Gurhan': { name:'ANAKIN',  color:'#ffd700', alias:'Yrd. Doç. Dr. Utku Gürhan' },
-  'Luke__Yakup_Kahveci':  { name:'LUKE',    color:'#ff6b35', alias:'Op. Dr. Yakup Kahveci' },
+  'Luke__Yakup_Kahve':  { name:'LUKE',    color:'#ff6b35', alias:'Op. Dr. Yakup Kahve' },
 };
 
 
@@ -4342,7 +4342,7 @@ function getCharKey(name) {
   if (name==='YODA') return 'Yoda__Levent_Umur';
   if (name==='OBI-WAN') return 'ObiWan__Enes_Sari';
   if (name==='ANAKIN') return 'Anakin__Utku_Gurhan';
-  if (name==='LUKE') return 'Luke__Yakup_Kahveci';
+  if (name==='LUKE') return 'Luke__Yakup_Kahve';
   return name;
 }
 
@@ -4362,7 +4362,7 @@ async function renderSharedResults() {
     'YODA':'Yoda__Levent_Umur',
     'OBI-WAN':'ObiWan__Enes_Sari',
     'ANAKIN':'Anakin__Utku_Gurhan',
-    'LUKE':'Luke__Yakup_Kahveci'
+    'LUKE':'Luke__Yakup_Kahve'
   };
   const charColors = {
     'YODA':'#39ff14','OBI-WAN':'#00d4ff','ANAKIN':'#ffd700','LUKE':'#ff6b35'
@@ -4536,6 +4536,60 @@ async function renderSharedResults() {
   }).join('');
 }
 
+
+
+// ── ONE-TIME MIGRATION: Kahveci → Kahve key rename ──────────────────────────
+(function migrateKahveciToKahve() {
+  try {
+    const combined = JSON.parse(localStorage.getItem('mcq_vault_combined') || '{}');
+    const oldKey = 'Luke__Yakup_Kahveci';
+    const newKey = 'Luke__Yakup_Kahve';
+    if (combined[oldKey] && !combined[newKey]) {
+      combined[newKey] = combined[oldKey];
+      delete combined[oldKey];
+      localStorage.setItem('mcq_vault_combined', JSON.stringify(combined));
+      console.log('[YODA] Migrated Kahveci → Kahve in localStorage');
+    } else if (combined[oldKey] && combined[newKey]) {
+      // Her ikisi de var — birleştir, dolu skor önceliği
+      const oldData = combined[oldKey];
+      const newData = combined[newKey];
+      const oldScores = oldData.scores || {};
+      newData.scores = newData.scores || {};
+      Object.keys(oldScores).forEach(qid => {
+        const oldQ = oldScores[qid];
+        const newQ = newData.scores[qid];
+        const oldFull = oldQ && Object.values(oldQ).some(v => v > 0);
+        const newFull = newQ && Object.values(newQ).some(v => v > 0);
+        if (oldFull && !newFull) newData.scores[qid] = oldQ;
+        else if (oldFull && newFull) {
+          const mergedQ = { ...newQ };
+          Object.keys(oldQ).forEach(k => {
+            if (oldQ[k] && oldQ[k] > 0) mergedQ[k] = oldQ[k];
+          });
+          newData.scores[qid] = mergedQ;
+        }
+      });
+      delete combined[oldKey];
+      localStorage.setItem('mcq_vault_combined', JSON.stringify(combined));
+      console.log('[YODA] Merged Kahveci data into Kahve');
+    }
+    // Pending sync queue'da da düzelt
+    const pending = JSON.parse(localStorage.getItem('mcq_pending_sync') || '{}');
+    let pendingChanged = false;
+    Object.keys(pending).forEach(k => {
+      if (k.startsWith('Luke__Yakup_Kahveci:')) {
+        const newK = k.replace('Luke__Yakup_Kahveci:', 'Luke__Yakup_Kahve:');
+        pending[newK] = { ...pending[k], charKey: 'Luke__Yakup_Kahve' };
+        delete pending[k];
+        pendingChanged = true;
+      }
+    });
+    if (pendingChanged) {
+      localStorage.setItem('mcq_pending_sync', JSON.stringify(pending));
+      console.log('[YODA] Migrated pending sync entries');
+    }
+  } catch(e) {}
+})();
 
 // ── AUTO SYNC: Redis ↔ localStorage (çift yönlü) ───────────────────────────
 // 1. Redis → localStorage: diğer cihazlardaki verileri çek
