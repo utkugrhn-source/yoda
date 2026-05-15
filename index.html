@@ -337,6 +337,14 @@ nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
 .q-stem{font-size:14px;line-height:1.8;color:var(--text);margin-bottom:14px;
   padding-bottom:14px;border-bottom:1px solid var(--border);}
 .q-options{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+.reminder-block{margin:8px 0 16px;padding:12px 14px;border-radius:6px;background:rgba(57,255,20,.04);border:1px solid rgba(57,255,20,.18);font-size:12px;line-height:1.55;color:var(--text2);}
+.reminder-block:not(:first-child){margin-top:8px;}
+.reminder-title{font-family:'Orbitron',monospace;font-size:11px;color:#39ff14;letter-spacing:.05em;margin-bottom:6px;font-weight:700;}
+.reminder-desc{margin-bottom:6px;color:var(--text2);}
+.reminder-scale{display:flex;flex-wrap:wrap;gap:8px;font-size:11px;color:var(--text3);}
+.reminder-scale span{white-space:nowrap;}
+.reminder-scale b{color:var(--text);font-weight:600;}
+
 .q-option{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;
   border-radius:3px;border:1px solid var(--border);background:rgba(0,212,255,.02);
   font-size:13px;line-height:1.6;}
@@ -3947,6 +3955,29 @@ function renderQuestion(idx) {
       <div class="q-body">
         <div class="q-stem">${q.stem}</div>
         <div class="q-options">${optHtml}</div>
+
+        <div class="reminder-block">
+          <div class="reminder-title">📌 STEM KALİTESİ HATIRLATMA</div>
+          <div class="reminder-desc">Stem = soru kökü. Sorunun açık, net, gereksiz bilgiden uzak, tek doğru cevaba yönlendiren ve yanıltıcı olmayan şekilde yazılıp yazılmadığını değerlendir.</div>
+          <div class="reminder-scale">
+            <span><b>1</b> Çok zayıf / belirsiz</span>
+            <span><b>2</b> Orta / kısmen sorunlu</span>
+            <span><b>3</b> İyi / anlaşılır</span>
+            <span><b>4</b> Mükemmel / çok net</span>
+          </div>
+        </div>
+
+        <div class="reminder-block">
+          <div class="reminder-title">📌 BLOOM SEVİYESİ HATIRLATMA</div>
+          <div class="reminder-desc">Sorunun öğrenciden hangi zihinsel beceriyi istediğini gösterir.</div>
+          <div class="reminder-scale">
+            <span><b>1</b> Hatırlama (bilgi)</span>
+            <span><b>2</b> Anlama / açıklama</span>
+            <span><b>3</b> Uygulama / klinik kullanım</span>
+            <span><b>4</b> Analiz / ayırıcı tanı / karar</span>
+          </div>
+        </div>
+
         <div class="rubric-section-title">⚡ KRİTER DEĞERLENDİRMESİ — 1:Yetersiz · 2:Orta · 3:İyi · 4:Mükemmel</div>
         <div class="rubric-grid">${rubricHtml}</div>
       </div>
